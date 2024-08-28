@@ -1,0 +1,25 @@
+{
+  "server_url": "http://localhost:8762",
+  "socket_port": 12345,
+  "watched_folder": "/path/to/watched/folder",
+  "api_endpoints": {
+    "login": "/users/auth/login",
+    "refresh_tokens": "/users/auth/keep-alive",
+    "files": "/files",
+    "files_structure": "/files/structure",
+    "file_element": "/files/{elementId}",
+    "file_download": "/files/{elementId}/download",
+    "file_create": "/files/",
+    "file_update": "/files/{elementId}",
+    "file_move": "/files/{elementId}/move/{folderId}",
+    "file_delete": "/files/{elementId}",
+    "file_access_root": "/files/root",
+    "shared_files_root": "/share/root",
+    "share_item": "/share/",
+    "revoke_share": "/share/",
+    "history": "/history/{userId}",
+    "websocket_sync": "/websocket/sync",
+    "websocket_ack": "/websocket/ack/{commandId}"
+  },
+  "web_app_url": "http://localhost:8000/web"
+}
