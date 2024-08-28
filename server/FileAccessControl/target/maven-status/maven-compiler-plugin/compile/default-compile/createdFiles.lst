@@ -1,0 +1,17 @@
+edu/udg/tfg/FileAccessControl/config/RabbitConfig.class
+edu/udg/tfg/FileAccessControl/controllers/requests/AccessRequest.class
+edu/udg/tfg/FileAccessControl/entities/AccessRule.class
+edu/udg/tfg/FileAccessControl/queue/Receiver.class
+edu/udg/tfg/FileAccessControl/entities/mappers/AccessMapperImpl.class
+edu/udg/tfg/FileAccessControl/queue/Sender.class
+edu/udg/tfg/FileAccessControl/queue/messages/AddAccess.class
+edu/udg/tfg/FileAccessControl/entities/mappers/AccessMapper.class
+edu/udg/tfg/FileAccessControl/controllers/FileAccessController.class
+edu/udg/tfg/FileAccessControl/queue/messages/DeleteAccess.class
+edu/udg/tfg/FileAccessControl/queue/messages/DeleteElemtn.class
+edu/udg/tfg/FileAccessControl/FileAccessControlApplication.class
+edu/udg/tfg/FileAccessControl/controllers/responses/AccessResponse.class
+edu/udg/tfg/FileAccessControl/entities/AccessType.class
+edu/udg/tfg/FileAccessControl/repositories/AccessRuleRepository.class
+edu/udg/tfg/FileAccessControl/queue/messages/DeleteElemtnConfirm.class
+edu/udg/tfg/FileAccessControl/services/FileAccessService.class

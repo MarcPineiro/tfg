@@ -1,0 +1,5 @@
+edu/udg/tfg/FileSharing/queue/messages/DeleteElemtnConfirm.class
+edu/udg/tfg/FileSharing/config/RabbitConfig.class
+edu/udg/tfg/FileSharing/queue/Sender.class
+edu/udg/tfg/FileSharing/queue/Receiver.class
+edu/udg/tfg/FileSharing/FileSharingApplication.class
