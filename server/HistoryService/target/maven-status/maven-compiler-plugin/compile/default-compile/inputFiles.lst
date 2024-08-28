@@ -1,0 +1,9 @@
+/home/mpi/tfg/server/HistoryService/src/main/java/edu/udg/tfg/HistoryService/repositories/HistoryRepository.java
+/home/mpi/tfg/server/HistoryService/src/main/java/edu/udg/tfg/HistoryService/HistoryServiceApplication.java
+/home/mpi/tfg/server/HistoryService/src/main/java/edu/udg/tfg/HistoryService/services/HistoryService.java
+/home/mpi/tfg/server/HistoryService/src/main/java/edu/udg/tfg/HistoryService/entities/HistoryRecord.java
+/home/mpi/tfg/server/HistoryService/src/main/java/edu/udg/tfg/HistoryService/config/RabbitConfig.java
+/home/mpi/tfg/server/HistoryService/src/main/java/edu/udg/tfg/HistoryService/queue/messages/RecordMessage.java
+/home/mpi/tfg/server/HistoryService/src/main/java/edu/udg/tfg/HistoryService/entities/mappers/RecordMapper.java
+/home/mpi/tfg/server/HistoryService/src/main/java/edu/udg/tfg/HistoryService/controlers/HistoryController.java
+/home/mpi/tfg/server/HistoryService/src/main/java/edu/udg/tfg/HistoryService/queue/Receiver.java

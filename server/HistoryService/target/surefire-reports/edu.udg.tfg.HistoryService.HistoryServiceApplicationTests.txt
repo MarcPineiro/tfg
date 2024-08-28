@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: edu.udg.tfg.HistoryService.HistoryServiceApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.057 s -- in edu.udg.tfg.HistoryService.HistoryServiceApplicationTests

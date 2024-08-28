@@ -1,0 +1,10 @@
+edu/udg/tfg/HistoryService/controlers/HistoryController.class
+edu/udg/tfg/HistoryService/entities/mappers/RecordMapperImpl.class
+edu/udg/tfg/HistoryService/queue/Receiver.class
+edu/udg/tfg/HistoryService/services/HistoryService.class
+edu/udg/tfg/FileManagement/queue/messages/RecordMessage.class
+edu/udg/tfg/HistoryService/entities/HistoryRecord.class
+edu/udg/tfg/HistoryService/entities/mappers/RecordMapper.class
+edu/udg/tfg/HistoryService/config/RabbitConfig.class
+edu/udg/tfg/HistoryService/HistoryServiceApplication.class
+edu/udg/tfg/HistoryService/repositories/HistoryRepository.class
