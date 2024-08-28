@@ -1,0 +1,183 @@
+/* General File Manager Styles */
+.file-manager {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar .icon {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.search-bar input {
+    font-size: 16px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.user-settings .icon {
+    font-size: 20px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.file-manager-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.file-manager-header .header-left .btn {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #f1f3f4;
+}
+
+.file-manager-header .header-left .btn-active {
+    background-color: #dfe1e5;
+}
+
+.file-manager-header .header-right {
+    display: flex;
+    align-items: center;
+}
+
+.view-toggle {
+    display: flex;
+    align-items: center;
+}
+
+.view-icon {
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.view-icon.active {
+    color: #007bff;
+}
+
+/* File Manager Content */
+.file-manager-content {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    border: 1px solid #ddd;
+}
+
+.file-manager-content.grid-view {
+    display: grid;
+}
+
+.file-manager-content.list-view {
+    display: list-item;
+}
+
+/* Grid View Styles */
+.grid-view .element {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: fit-content;
+}
+
+/* Grid View Styles */
+.grid-view .icon-container {
+    white-space: nowrap;       /* Prevent text from wrapping */
+    overflow: hidden;          /* Hide the overflowed content */
+    text-overflow: ellipsis;   /* Show ellipsis for overflowed content */
+    width: 100%;               /* Ensure the text spans the container's width */
+    font-size: 14px;           /* Adjust the font size */
+    display: contents;
+}
+
+/* List View Styles */
+.list-view .element {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    width: 100%;
+    height: 50px;
+    padding-bottom: 15px;
+}
+
+/* List View Styles */
+.list-view .icon-container {
+    width: 100%;
+}
+
+/* Common Styles for Element, Folder, and File */
+.element {
+    padding: 20px; /* Increase padding for a box-like appearance */
+    box-sizing: border-box;
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+    border: 1px solid #ddd;  /* Add a border to create the box appearance */
+    border-radius: 8px;  /* Slightly round the corners for a box effect */
+    background-color: #fff;  /* White background to simulate a box */
+}
+
+.element-header,
+.folder-header,
+.file-header {
+    display: flex;
+    align-items: center;
+}
+
+.list-view .icon-container {
+    display: flex;             /* Use Flexbox to align items */
+    align-items: center;       /* Align items vertically centered */
+}
+
+/* Drag and Drop Styles */
+.element.drag-hover,
+.folder.drag-hover,
+.file.drag-hover {
+    border: 2px dashed #007bff;  /* Dashed border for drop target indicator */
+    background-color: #e6f7ff;  /* Lighter blue background for hover */
+}
+
+.element.dragging,
+.folder.dragging,
+.file.dragging {
+    opacity: 0.8;  /* Reduced opacity for dragging items */
+    transform: scale(1.05);  /* Slightly scale up the item being dragged */
+    border-color: #007bff;  /* Change border color when dragging */
+}
+
+.element.dragging .element-icon,
+.folder.dragging .folder-icon,
+.file.dragging .file-icon {
+    color: #007bff;  /* Change icon color when dragging */
+}

@@ -1,0 +1,29 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar .icon {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.search-bar input {
+    font-size: 16px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.user-settings .icon {
+    font-size: 20px;
+    margin-left: 20px;
+    cursor: pointer;
+}

@@ -1,0 +1,17 @@
+.folder {
+    align-items: center;
+    cursor: pointer;
+    display: inline;
+}
+
+.folder-name {
+    flex: 1;
+}
+
+.folder-name-input {
+    width: 100%;
+    font-size: 16px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}

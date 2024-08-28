@@ -1,0 +1,38 @@
+/* Add this to your Element or Folder CSS */
+.element {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    text-align: center;
+}
+
+.grid-view .element .element-name {
+    font-size: 14px; /* Adjust the font size as needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90px;
+}
+
+.list-view .element .element-name {
+    font-size: 14px; /* Adjust the font size as needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.element.highlighted .element-name {
+    max-width: 90px;          /* Set the maximum width of the text */
+    word-wrap: break-word;    /* Allow the text to wrap onto the next line */
+    word-break: break-word;    /* Break words if they exceed the max width */
+    white-space: normal;      /* Allow the text to wrap normally */
+    font-size: 14px;          /* Adjust the font size */
+    line-height: 1.2;         /* Adjust the line height to give space between wrapped lines */
+    text-align: center;         /* Align the text to the left */
+    overflow: initial;
+}
+
+.highlighted {
+    background-color: rgba(255, 145, 0, 0.199);
+}
