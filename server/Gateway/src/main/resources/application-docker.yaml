@@ -1,0 +1,75 @@
+spring:
+  application:
+    name: Gateway
+  cloud:
+    gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods:
+              - GET
+              - POST
+
+server:
+  port: 8762
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:8761/eureka
+    # If you need to use a specific IP:
+    # service-url.defaultZone: http://192.168.1.28:8761/eureka
+  instance:
+    instance-id: Gateway
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+
+auth:
+  service:
+    url: UserAuthentication
+
+web:
+  host: http://localhost:5173
+
+logging:
+  level:
+    root: info
+    org:
+      springframework:
+        cloud:
+          gateway:
+            route:
+              RouteDefinitionRouteLocator: info
+            handler: DEBUG
+            filter: DEBUG
+        web:
+          reactive: DEBUG
+      netflix:
+        eureka: DEBUG
+    com:
+      netflix:
+        discovery: DEBUG
+    reactor:
+      netty:
+        DEBUG: DEBUG
+        http:
+          client:
+            HttpClient: DEBUG
+
+access:
+  token:
+    name: accessToken
+
+
