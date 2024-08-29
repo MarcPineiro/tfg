@@ -17,7 +17,8 @@ class TokenManager:
 
         self.refreshTimer = QTimer()
         self.refreshTimer.timeout.connect(self.refreshTokens)
-        self.refreshTimer.start(9 * 60 * 1000)
+        #self.refreshTimer.start(9 * 60 * 1000)
+        self.refreshTimer.start(1 * 60 * 1000)
 
     def load_config(self, config_path):
         try:

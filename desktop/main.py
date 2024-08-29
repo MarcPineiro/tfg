@@ -59,7 +59,7 @@ def main():
                 QMessageBox.critical(None, "Decryption Error", "Failed to decrypt password. Exiting.")
                 sys.exit(1)
 
-    #if not username or not password:
+    #if not username or not password: TODO Descomentar para iniciar con login
         #    loginDialog = LoginDialog(dbPath, "./config/config.json")
         #if loginDialog.exec_() != QDialog.Accepted:
         #    sys.exit("Could not authenticate user.")
