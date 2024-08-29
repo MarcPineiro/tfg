@@ -1,3 +1,6 @@
 edu/udg/tfg/FileManagement/feignClients/fileAccess/AccessType.class
 edu/udg/tfg/FileManagement/FileManagementApplication.class
+edu/udg/tfg/FileManagement/feignClients/fileShare/UsersSharedResponse.class
+edu/udg/tfg/FileManagement/controlllers/responses/SharedInfo.class
 edu/udg/tfg/FileManagement/controlllers/requests/ShareRequest.class
+edu/udg/tfg/FileManagement/feignClients/userManagement/UserAuthenticationClient.class

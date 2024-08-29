@@ -1,6 +1,7 @@
 package edu.udg.tfg.FileManagement.entities.mappers;
 
 import edu.udg.tfg.FileManagement.controlllers.responses.FileInfo;
+import edu.udg.tfg.FileManagement.controlllers.responses.SharedInfo;
 import edu.udg.tfg.FileManagement.entities.FileEntity;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-08-27T23:17:01+0200",
+    date = "2024-08-28T22:44:39+0200",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 18.0.2 (Amazon.com Inc.)"
 )
 @Component
@@ -47,9 +48,10 @@ public class FileMapperImpl implements FileMapper {
         lastModification = source.getLastModification();
         name = source.getName();
 
-        String contentType = null;
+        String owner = null;
+        List<SharedInfo> sharedWith = null;
 
-        FileInfo fileInfo = new FileInfo( id, name, contentType, creationDate, lastModification );
+        FileInfo fileInfo = new FileInfo( id, name, creationDate, lastModification, owner, sharedWith );
 
         return fileInfo;
     }
