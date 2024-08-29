@@ -1,5 +1,6 @@
 package edu.udg.tfg.UserAuthentication.controllers;
 
+import edu.udg.tfg.UserAuthentication.controllers.requests.ChangePasswordRequest;
 import edu.udg.tfg.UserAuthentication.controllers.requests.UserInfoRequest;
 import edu.udg.tfg.UserAuthentication.controllers.requests.UserRegisterRequest;
 import edu.udg.tfg.UserAuthentication.entities.UserEntity;
@@ -16,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.apache.hc.core5.http.HttpStatus;
 
-import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/users/auth")
@@ -117,6 +118,30 @@ public class AuthenticationController {
     public ResponseEntity<?> getId(@PathVariable("username") String username) {
         UserEntity userInfo = userService.getUserByUsername(username);
         return ResponseEntity.ok(userInfo.getId());
+    }
+
+    @GetMapping("/username")
+    public ResponseEntity<?> getUserName(@RequestHeader("X-User-Id") UUID id) {
+        UserEntity userInfo = userService.getUserName(id);
+        return ResponseEntity.ok(userInfo.getUsername());
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody ChangePasswordRequest request) {
+        LOG.info("Changing password for user");
+
+        String jwtToken = token.substring(7);
+        if (!jwtTokenUtil.validateTokenExpiration(jwtToken)) {
+            return ResponseEntity.status(HttpStatus.SC_UNAUTHORIZED).body("Token is not valid");
+        }
+
+        String username = jwtTokenUtil.extractUsername(jwtToken);
+        if (username == null) {
+            return ResponseEntity.status(HttpStatus.SC_UNAUTHORIZED).body("Invalid token");
+        }
+
+        userService.changePassword(username, request.getPassword());
+        return ResponseEntity.ok("Password changed successfully");
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.OPTIONS)

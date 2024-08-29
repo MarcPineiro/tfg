@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -76,5 +77,15 @@ public class UserService {
 
     public UserEntity getUserByUsername(String username) {
         return userRepository.getByUsername(username).orElseThrow(() -> new NotFoundException("User not found"));
+    }
+
+    public void changePassword(String username, String password) {
+        UserEntity user = findByUsername(username).orElseThrow(() -> new NotFoundException("User not found"));
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+    }
+
+    public UserEntity getUserName(UUID id) {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found"));
     }
 }
