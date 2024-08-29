@@ -1,7 +1,7 @@
 {
   "server_url": "http://localhost:8762",
   "socket_port": 12345,
-  "watched_folder": "/path/to/watched/folder",
+  "watched_folder": "./test",
   "api_endpoints": {
     "login": "/users/auth/login",
     "refresh_tokens": "/users/auth/keep-alive",

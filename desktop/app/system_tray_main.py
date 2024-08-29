@@ -22,6 +22,8 @@ from .utils import getSecureDbPath, setSecureFilePermissions
 class SystemTrayMain(QMainWindow):
     def __init__(self, tokenManager):
         super().__init__()
+        self.firstSyncDone = False
+        self.syncEnabled = True
         self.config = self.loadConfig()
         self.dbPath = getSecureDbPath()
         DatabaseOperations.createTables(self.dbPath)
@@ -29,20 +31,16 @@ class SystemTrayMain(QMainWindow):
 
         self.fileSyncManager = FileSyncManager(self.config, self.tokenManager)
 
-        serverUrl, socketPort, watchedFolder, apiEndpoints, webUrl = self.config
-
-
-
         self.socketClient = SocketClient(
-            host=serverUrl,
-            port=socketPort,
+            config_path="./config/config.json",
             tokenManager=self.tokenManager,
             fileSyncManager=self.fileSyncManager,
             app=self
         )
 
-        self.watcher = QFileSystemWatcher(self.config["watched_folder"])
-        self.watcher.fileChangedSignal.connect(self.handleFileChange)
+        self.watcher = QFileSystemWatcher([self.config[2]])
+        self.watcher.fileChanged.connect(self.handleFileChange)
+        self.watcher.directoryChanged.connect(self.handleFileChange)
 
         self.setupUi()
         self.setupSystemTray()
@@ -59,7 +57,7 @@ class SystemTrayMain(QMainWindow):
 
     @staticmethod
     def loadConfig():
-        configFilePath = "./config/config.json";
+        configFilePath = "./config/config.json"
         try:
             with open(configFilePath, 'r') as configFile:
                 configData = json.load(configFile)
@@ -144,13 +142,13 @@ class SystemTrayMain(QMainWindow):
         self.recentChangesArea.setWidget(self.recentChangesWidget)
         layout.addWidget(self.recentChangesArea)
 
-        self.recentChangesManager = FileSyncManager(self.recentChangesLayout)
+        self.recentChangesManager = FileSyncManager(self.recentChangesLayout, self.tokenManager)
 
-        self.historyButton = QPushButton()
-        self.historyButton.setIcon(QIcon("icons/history.png"))
-        self.historyButton.setToolTip("View Full History")
-        self.historyButton.clicked.connect(self.openHistory)
-        layout.addWidget(self.historyButton)
+        #self.historyButton = QPushButton()
+        #self.historyButton.setIcon(QIcon("icons/history.png"))
+        #self.historyButton.setToolTip("View Full History")
+        #self.historyButton.clicked.connect(self.openHistory)
+        #layout.addWidget(self.historyButton)
 
         syncControlLayout = QHBoxLayout()
 
@@ -196,9 +194,9 @@ class SystemTrayMain(QMainWindow):
         settingsAction.triggered.connect(self.openSettings)
         trayMenu.addAction(settingsAction)
 
-        historyAction = QAction("History", self)
-        historyAction.triggered.connect(self.openHistory)
-        trayMenu.addAction(historyAction)
+        #historyAction = QAction("History", self)
+        #historyAction.triggered.connect(self.openHistory)
+        #trayMenu.addAction(historyAction)
 
         quitAction = QAction("Close", self)
         quitAction.triggered.connect(self.closeApplication)
@@ -263,7 +261,7 @@ class SystemTrayMain(QMainWindow):
             self.syncButton.setIcon(QIcon("icons/sync_off.png"))
 
     def openFolder(self):
-        folderPath = self.config["watched_folder"]
+        folderPath = self.config[2]
         try:
             QDesktopServices.openUrl(QUrl.fromLocalFile(folderPath))
             logging.info(f"Opened folder: {folderPath}.")
@@ -272,7 +270,7 @@ class SystemTrayMain(QMainWindow):
             QMessageBox.critical(self, "Folder Error", "Failed to open the folder.")
 
     def openWeb(self):
-        webUrl = self.config["web_app_url"]
+        webUrl = self.config[4]
         try:
             QDesktopServices.openUrl(QUrl(webUrl))
             logging.info(f"Opened web page: {webUrl}.")
