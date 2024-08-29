@@ -386,7 +386,7 @@ export const checkUsernameAPI = async (username: string) => {
 };
 
 export const getFileDetailsAPI = async (fileId:string) => {
-    const response = await fetchWithTokenRefresh(getApiUrl(`/files/${fileId}/details`), {
+    const response = await fetchWithTokenRefresh(getApiUrl(`/files/${fileId}`), {
         method: 'GET',
     });
 
@@ -398,10 +398,9 @@ export const getFileDetailsAPI = async (fileId:string) => {
     return response.json();
 };
 
-export const revokeShareAPI = async (shareRequest: ShareRequest): Promise<void> => {
-    const response = await fetchWithTokenRefresh(getApiUrl(`/share/`), {
+export const revokeShareAPI = async (fileId:string): Promise<void> => {
+    const response = await fetchWithTokenRefresh(getApiUrl(`/share/${fileId}`), {
         method: 'DELETE',
-        body: JSON.stringify(shareRequest),
     });
 
     if (!response.ok) {
@@ -481,7 +480,7 @@ export const refreshTokenAPI = async (): Promise<void> => {
     });
 
     if (!response.ok) {
-        showToast('Failed to refresh token');
+        showToast('Failed to refresh token');  
         return;
     }
 

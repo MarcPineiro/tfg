@@ -5,10 +5,10 @@ import '../css/ContextMenu.css';
 import { Items } from '../utils/Items';  // Import the custom hook
 import { Item } from '../public/types';
 import {
-    deleteItemAPI,
+    deleteTrashItemAPI,
     getFileDetailsAPI,
-    moveItemAPI,
-    renameItemAPI,
+    restoreTrashItemAPI,
+    revokeShareAPI,
   } from '../utils/api';
 
 interface ContextMenuProps {
@@ -109,6 +109,8 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
     const handleDeleteItem = () => {
         if (contextMenu.itemId !== null && contextMenu.name !== null) {
             handleDelete(contextMenu.itemId, contextMenu.name!);
+            setHighlightedItem!(null);
+            setRechargeItems(true);
         }
         setShowContextMenu(false);
     };
@@ -133,16 +135,64 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 
       const handleMove = () => {
         onContextMenuAction('move');
+        setRechargeItems(true);
         setShowContextMenu(false);
     };
 
     const handleShare = () => {
         onContextMenuAction('share');
+        setRechargeItems(true);
         setShowContextMenu(false);
     };
 
     const handleDetails = () => {
         onContextMenuAction('details');
+        setRechargeItems(true);
+        setShowContextMenu(false);
+    };
+
+    const handleRevoke = async () => {
+        if (contextMenu.itemId !== null && contextMenu.name !== null) {
+            try {
+                await revokeShareAPI(contextMenu.itemId);
+                setRechargeItems(true);
+                setHighlightedItem!(null);
+                showToast('Item deleted successfully!', 'info');
+            } catch (error) {
+                showToast('Failed to delete item.', 'error');
+            }
+        }
+        setShowContextMenu(false);
+    };
+
+    const handleRestore = async () => {
+        if (contextMenu.itemId !== null && contextMenu.name !== null) {
+            try {
+                await restoreTrashItemAPI(contextMenu.itemId);
+                setRechargeItems(true);
+                setHighlightedItem!(null);
+                showToast('Item restored successfully!', 'info');
+            } catch (error) {
+                showToast('Failed to restore item.', 'error');
+            }
+        }
+        setShowContextMenu(false);
+    };
+
+    const handleDeletePerma = async () => {
+        if (contextMenu.itemId !== null && contextMenu.name !== null) {
+            const confirmDelete = window.confirm(`Are you sure you want to completly delete ${contextMenu.name}?`);
+            if (confirmDelete) {
+                try {
+                    await deleteTrashItemAPI(contextMenu.itemId);
+                    setRechargeItems(true);
+                    setHighlightedItem!(null);
+                    showToast('Item deleted successfully!', 'info');
+                } catch (error) {
+                    showToast('Failed to delete item.', 'error');
+                }
+            }
+        }
         setShowContextMenu(false);
     };
 
@@ -178,14 +228,13 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
             )}
             {currentContext === 'shared' && (itemType === 'folder' || itemType === 'file') && (
                 <>
-                    <li onClick={() => {/* Implement Revoke Share */ }}>Revoke Share</li>
-                    <li onClick={handleDetails}><AiOutlineFile className="icon" /> Details</li>
+                    <li onClick={handleRevoke}>Revoke Share</li>
                 </>
             )}
             {currentContext === 'trash' && (itemType === 'folder' || itemType === 'file') && (
                 <>
-                    <li onClick={() => {/* Implement Restore */ }}>Restore</li>
-                    <li onClick={() => {/* Implement Permanent Delete */ }}>Delete Permanently</li>
+                    <li onClick={() => {handleRestore}}>Restore</li>
+                    <li onClick={() => {handleDeletePerma}}>Delete Permanently</li>
                 </>
             )}
         </ul>
