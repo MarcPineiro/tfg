@@ -1,0 +1,4 @@
+FROM amazoncorretto:17-alpine-jdk
+EXPOSE 8761
+COPY jar/HistoryService-0.0.1.jar HistoryService.jar
+ENTRYPOINT ["java","-jar","/HistoryService.jar"]
