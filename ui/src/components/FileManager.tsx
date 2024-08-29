@@ -62,9 +62,9 @@ const FileManager: React.FC = () => {
 
     const initializeFolders = async () => {
         try {
-            const rootItems = await getRootItems();
-            const trashItems = await getRootTrashAPI();
-            const sharedItems = await getRootSharedItems();
+            const rootItems = await getRootItems(useToast);
+            const trashItems = await getRootTrashAPI(useToast);
+            const sharedItems = await getRootSharedItems(useToast);
 
             if(!(rootItems || trashItems || sharedItems)) {
                 logoutUser();
@@ -99,7 +99,7 @@ const FileManager: React.FC = () => {
     const refreshItems = async (parentFolderId: string) => {
         if (parentFolderId === currentFolder?.id) {
             try {
-                await currentItems(currentFolder.id, currentContext);
+                await currentItems(currentFolder.id, currentContext,useToast);
                 showToast('Items refreshed successfully!', 'info');
             } catch (error) {
                 showToast('Failed to refresh items.', 'error');
@@ -109,7 +109,7 @@ const FileManager: React.FC = () => {
 
     const handleMove = (targetFolderId: string) => {
         if (selectedItem) {
-            moveItem(selectedItem.id, targetFolderId);
+            moveItem(selectedItem.id, targetFolderId,useToast);
             setRechargeItems(true);
             setShowMoveModal(false);
         }
@@ -165,9 +165,9 @@ const FileManager: React.FC = () => {
             } else if (e.key === 'ArrowRight' && isGridView) {
                 moveHighlightRight();
             } else if (e.key === 'Enter' && highlightedItem !== null) {
-                downloadItem(highlightedItem.id);
+                downloadItem(highlightedItem.id,useToast);
             } else if (e.key === 'Delete' && highlightedItem !== null) {
-                deleteItem(highlightedItem.id);
+                deleteItem(highlightedItem.id,useToast);
                 setRechargeItems(true);
             }
         };
@@ -180,9 +180,9 @@ const FileManager: React.FC = () => {
 
     const recharge = () => {
         if(currentFolder == null) {
-            getRootItems();
+            getRootItems(useToast);
         } else {
-            currentItems(currentFolder!.id, currentContext);
+            currentItems(currentFolder!.id, currentContext,useToast);
         }
     }
 

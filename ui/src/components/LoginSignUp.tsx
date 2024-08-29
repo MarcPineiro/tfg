@@ -21,7 +21,7 @@ const LoginSignUp: React.FC<{ onLoginSuccess: () => void }>  = ({ onLoginSuccess
 
     const handleLogin = async () => {
         try {
-            await loginUserAPI({ username, password });
+            await loginUserAPI({ username, password }, useToast);
             setIsAuthenticated(true);
             showToast('Login successful!', 'info');
             onLoginSuccess();
@@ -32,7 +32,7 @@ const LoginSignUp: React.FC<{ onLoginSuccess: () => void }>  = ({ onLoginSuccess
 
     const handleSignUp = async () => {
         try {
-            await registerUserAPI({ username, password, email, firstName, lastName });
+            await registerUserAPI({ username, password, email, firstName, lastName }, useToast);
             setIsAuthenticated(true);
             showToast('Registration successful!', 'info');
             onLoginSuccess();

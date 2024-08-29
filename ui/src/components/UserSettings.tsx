@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getUserInfoAPI, updateUserInfoAPI, changePasswordAPI } from '../utils/api';
 import './UserSettings.css';
 import { UserInfo } from '../public/types';
+import { useToast } from './ToastProvider';
 
 interface UserSettingsProps {
     onClose: () => void;
@@ -17,7 +18,7 @@ const UserSettings: React.FC<UserSettingsProps> = ({ onClose }) => {
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const info = await getUserInfoAPI();
+                const info = await getUserInfoAPI(useToast);
                 setUserInfo(info);
             } catch (err) {
                 setError('Failed to load user information.');
@@ -29,9 +30,9 @@ const UserSettings: React.FC<UserSettingsProps> = ({ onClose }) => {
 
     const handleSave = async () => {
         try {
-            await updateUserInfoAPI(userInfo!);
+            await updateUserInfoAPI(userInfo!, useToast);
             if (password && password === confirmPassword) {
-                await changePasswordAPI(password);
+                await changePasswordAPI(password, useToast);
             } else if (password) {
                 setError('Passwords do not match.');
                 return;

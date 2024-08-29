@@ -8,7 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
       </profile>
-      <profile name="Annotation profile for UserManagement" enabled="true">
+      <profile name="Annotation profile for FileManagement" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -19,8 +19,8 @@
         <module name="FileAccessControl" />
         <module name="Gateway" />
         <module name="FileSharing" />
-        <module name="UserManagement" />
         <module name="FileManagement" />
+        <module name="UserManagement" />
         <module name="HistoryService" />
         <module name="UserAuthentication" />
         <module name="Trash" />

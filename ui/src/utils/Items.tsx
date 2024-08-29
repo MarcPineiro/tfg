@@ -18,41 +18,41 @@ export const Items = () => {
     // const [data, setData] = useState<folderStructureData>(mockFolderStructure);
     //const [currentFolderId, setCurrentFolderId] = useState<string | null>(null);
 
-    const getData = async (folderId: string | null = null, currentContext: string) : Promise<FolderItem | null> => {
+    const getData = async (folderId: string | null = null, currentContext: string, showToast?: (msg: string, toastType?: 'error' | 'info') => void) : Promise<FolderItem | null> => {
 
-        const folderData = await getFolderApi(folderId, currentContext);
+        const folderData = await getFolderApi(folderId, currentContext, showToast);
         return folderData;
     };
 
-    const renameItem = async (itemId: string, newName: string) => {
-        await renameItemAPI(itemId, newName);
+    const renameItem = async (itemId: string, newName: string, showToast?: (msg: string, toastType?: 'error' | 'info') => void) => {
+        await renameItemAPI(itemId, newName, showToast);
     };
 
-    const deleteItem = async (itemId: string) => {
-        await deleteItemAPI(itemId);
+    const deleteItem = async (itemId: string, showToast?: (msg: string, toastType?: 'error' | 'info') => void) => {
+        await deleteItemAPI(itemId, showToast);
     };
 
-    const moveItem = async (itemId: string, newFolder: string) => {
-        await moveItemAPI(itemId, newFolder);
+    const moveItem = async (itemId: string, newFolder: string, showToast?: (msg: string, toastType?: 'error' | 'info') => void) => {
+        await moveItemAPI(itemId, newFolder, showToast);
     }
 
-    const fileUpload = async (uploadedFiles: FileList | null, targetFolderId: string | null) => {
+    const fileUpload = async (uploadedFiles: FileList | null, targetFolderId: string | null, showToast?: (msg: string, toastType?: 'error' | 'info') => void) => {
         if (uploadedFiles) {
             for (let i = 0; i < uploadedFiles.length; i++) {
-                await uploadFileAPI(uploadedFiles[i], targetFolderId ?? '');
+                await uploadFileAPI(uploadedFiles[i], targetFolderId ?? '', showToast);
             }
         }
     };
 
-    const folderCreate = async (targetFolderId: string, file:File | null) => {
+    const folderCreate = async (targetFolderId: string, file:File | null, showToast?: (msg: string, toastType?: 'error' | 'info') => void) => {
         if(file) {
-            createFileAPI({name: file.name, contentType: file.type, size: file.size, parentFolderId: targetFolderId, isFolder: true}, file);
+            createFileAPI({name: file.name, contentType: file.type, size: file.size, parentFolderId: targetFolderId, isFolder: true}, file, showToast);
         }
     };
 
-    const downloadItem = async (itemId: string | null) => {
+    const downloadItem = async (itemId: string | null, showToast?: (msg: string, toastType?: 'error' | 'info') => void) => {
         if(itemId != null) {
-            downloadFileAPI(itemId);
+            downloadFileAPI(itemId, showToast);
         }
     }
 
@@ -67,23 +67,23 @@ export const Items = () => {
         return (sortItems([...folders, ...files]));
     }
 
-    const getRootItems = async (): Promise<FolderItem | null> => {
-        return await getRootFolderAPI();
+    const getRootItems = async (showToast?: (msg: string, toastType?: 'error' | 'info') => void): Promise<FolderItem | null> => {
+        return await getRootFolderAPI(showToast);
     }
 
-    const getRootSharedItems = async (): Promise<FolderItem | null> => {
-        return await getRootShareFolderAPI();
+    const getRootSharedItems = async (showToast?: (msg: string, toastType?: 'error' | 'info') => void): Promise<FolderItem | null> => {
+        return await getRootShareFolderAPI(showToast);
     }
 
-    const currentItems = async (folderId: string, currentContext: string): Promise<Item[] | null> => {
-        if(folderId != null && folderId != undefined) return getItems(await getData(folderId, currentContext));
+    const currentItems = async (folderId: string, currentContext: string, showToast?: (msg: string, toastType?: 'error' | 'info') => void): Promise<Item[] | null> => {
+        if(folderId != null && folderId != undefined) return getItems(await getData(folderId, currentContext,showToast));
         else {
             if(currentContext == "trash") {
-                return getItems(await getRootTrashAPI());
+                return getItems(await getRootTrashAPI(showToast));
             } else if(currentContext == "shared") {
-                return getItems(await getRootShareFolderAPI());
+                return getItems(await getRootShareFolderAPI(showToast));
             }
-            return getItems(await getRootFolderAPI()); //TODO mostrar error y actualizar structure
+            return getItems(await getRootFolderAPI(showToast)); //TODO mostrar error y actualizar structure
         }
     };
 

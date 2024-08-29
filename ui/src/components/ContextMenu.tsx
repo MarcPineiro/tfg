@@ -63,7 +63,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 
     const handleFolderCreate = () => {
         try {
-            folderCreate(currentFolderId, null);
+            folderCreate(currentFolderId, null, useToast);
             setRechargeItems(true);
             showToast('Folder created successfully!', 'info');
         } catch (error) {
@@ -75,7 +75,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         try {
             const uploadedFiles = event.target.files;
-            fileUpload(uploadedFiles, currentFolderId);
+            fileUpload(uploadedFiles, currentFolderId, useToast);
             setRechargeItems(true);
             showToast('File uploaded successfully!', 'info');
         } catch (error) {
@@ -96,7 +96,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 
         if (confirmDelete) {
             try {
-                await deleteItem(itemId);
+                await deleteItem(itemId, useToast);
                 setRechargeItems(true);
                 setHighlightedItem!(null);
                 showToast('Item deleted successfully!', 'info');
@@ -117,7 +117,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 
     const handleDownload = async () => {
         try {
-            const item = await getFileDetailsAPI(contextMenu.itemId!);
+            const item = await getFileDetailsAPI(contextMenu.itemId!, useToast);
             const blob = new Blob([item.content], { type: item.mimeType });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
@@ -154,7 +154,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
     const handleRevoke = async () => {
         if (contextMenu.itemId !== null && contextMenu.name !== null) {
             try {
-                await revokeShareAPI(contextMenu.itemId);
+                await revokeShareAPI(contextMenu.itemId, useToast);
                 setRechargeItems(true);
                 setHighlightedItem!(null);
                 showToast('Item deleted successfully!', 'info');
@@ -168,7 +168,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
     const handleRestore = async () => {
         if (contextMenu.itemId !== null && contextMenu.name !== null) {
             try {
-                await restoreTrashItemAPI(contextMenu.itemId);
+                await restoreTrashItemAPI(contextMenu.itemId, useToast);
                 setRechargeItems(true);
                 setHighlightedItem!(null);
                 showToast('Item restored successfully!', 'info');
@@ -184,7 +184,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
             const confirmDelete = window.confirm(`Are you sure you want to completly delete ${contextMenu.name}?`);
             if (confirmDelete) {
                 try {
-                    await deleteTrashItemAPI(contextMenu.itemId);
+                    await deleteTrashItemAPI(contextMenu.itemId, useToast);
                     setRechargeItems(true);
                     setHighlightedItem!(null);
                     showToast('Item deleted successfully!', 'info');

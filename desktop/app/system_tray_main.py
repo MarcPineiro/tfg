@@ -38,7 +38,7 @@ class SystemTrayMain(QMainWindow):
             app=self
         )
 
-        self.watcher = QFileSystemWatcher([self.config[2]])
+        self.watcher = QFileSystemWatcher([self.config['watched_folder']])
         self.watcher.fileChanged.connect(self.handleFileChange)
         self.watcher.directoryChanged.connect(self.handleFileChange)
 
@@ -73,7 +73,7 @@ class SystemTrayMain(QMainWindow):
 
             # os.remove(configFilePath) TODO remove file
             logging.info(f"Credentials successfully retrieved and config file deleted: {configFilePath}")
-            return serverUrl, socketPort, watchedFolder, apiEndpoints, webUrl
+            return configData
 
         except (FileNotFoundError, ValueError, json.JSONDecodeError) as e:
             logging.warning(f"Failed to retrieve credentials from config file: {e}")
@@ -91,11 +91,10 @@ class SystemTrayMain(QMainWindow):
         self.tokenManager = TokenManager(self.dbPath, loginDialog.username, EncryptionUtility.encryptData(loginDialog.password, EncryptionUtility.loadKey()))
 
         self.socketClient = SocketClient(
-            host=self.config["server_url"],
-            port=self.config["socket_port"],
             tokenManager=self.tokenManager,
             fileSyncManager=self.fileSyncManager,
-            app=self
+            app=self,
+            config_path="./config/config.json"
         )
         self.startSync()
         self.show()
@@ -261,7 +260,7 @@ class SystemTrayMain(QMainWindow):
             self.syncButton.setIcon(QIcon("icons/sync_off.png"))
 
     def openFolder(self):
-        folderPath = self.config[2]
+        folderPath = self.config['watched_folder']
         try:
             QDesktopServices.openUrl(QUrl.fromLocalFile(folderPath))
             logging.info(f"Opened folder: {folderPath}.")
@@ -270,7 +269,7 @@ class SystemTrayMain(QMainWindow):
             QMessageBox.critical(self, "Folder Error", "Failed to open the folder.")
 
     def openWeb(self):
-        webUrl = self.config[4]
+        webUrl = self.config['web_app_url']
         try:
             QDesktopServices.openUrl(QUrl(webUrl))
             logging.info(f"Opened web page: {webUrl}.")

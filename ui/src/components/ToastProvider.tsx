@@ -17,7 +17,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return (
         <ToastContext.Provider value={showToast}>
             {children}
-            <Toast message={message} type={type} />
+            <Toast message={message} type={type} setMessge={setMessage} />
         </ToastContext.Provider>
     );
 };

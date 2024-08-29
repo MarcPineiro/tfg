@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { checkUsernameAPI, shareItemAPI } from '../utils/api';
-import './ShareModal.css';
+import '../css/ShareModal.css';
 import { Item } from '../public/types';
+import { useToast } from './ToastProvider';
 
 const ShareModal: React.FC<({
     item: Item;
@@ -18,7 +19,7 @@ const ShareModal: React.FC<({
         const validateUsername = async () => {
             if (username) {
                 try {
-                    const user = await checkUsernameAPI(username);
+                    const user = await checkUsernameAPI(username, useToast);
                     if (user.id === item.ownerId) {
                         //setError('You cannot share with yourself.');
                         setIsUserValid(false);
@@ -38,7 +39,7 @@ const ShareModal: React.FC<({
     const handleShare = async () => {
         if (isCurrentUser || error) return;
         try {
-            await shareItemAPI({ elementId:item.id, shareUsername: username, accessLevel });
+            await shareItemAPI({ elementId:item.id, shareUsername: username, accessLevel }, useToast);
             onClose();
         } catch (err) {
             //setError('Failed to share the item.');

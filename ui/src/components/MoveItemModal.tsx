@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FolderItem } from '../public/types';
 import FolderStructure from './FolderStructure';
-import './MoveItemModal.css';
+import '../css/MoveItemModal.css';
 
 interface MoveItemModalProps {
     onClose: () => void;

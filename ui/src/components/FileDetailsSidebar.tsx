@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useToast } from './ToastProvider';
 import { getFileDetailsAPI, renameItemAPI, deleteItemAPI } from '../utils/api';
-import './FileDetailsSidebar.css';
+import '../css/FileDetailsSidebar.css';
 import { FileInfo } from '../public/types';
 
 const FileDetailsSidebar: React.FC<{ item: any; refreshItems: () => void }> = ({ item, refreshItems }) => {
@@ -14,7 +14,7 @@ const FileDetailsSidebar: React.FC<{ item: any; refreshItems: () => void }> = ({
     useEffect(() => {
         const fetchDetails = async () => {
             try {
-                const details = await getFileDetailsAPI(item.id);
+                const details = await getFileDetailsAPI(item.id, useToast);
                 setDetails(details);
             } catch (error) {
                 showToast('Failed to load file details.', 'error');
@@ -25,7 +25,7 @@ const FileDetailsSidebar: React.FC<{ item: any; refreshItems: () => void }> = ({
 
     const handleRename = async () => {
         try {
-            await renameItemAPI(item.id, newName);
+            await renameItemAPI(item.id, newName, useToast);
             refreshItems();
             setIsEditing(false);
             setShowSave(false);
@@ -37,7 +37,7 @@ const FileDetailsSidebar: React.FC<{ item: any; refreshItems: () => void }> = ({
 
     const handleDelete = async () => {
         try {
-            await deleteItemAPI(item.id);
+            await deleteItemAPI(item.id, useToast);
             refreshItems();
             showToast('File deleted successfully!', 'info');
         } catch (error) {
