@@ -100,7 +100,7 @@ public class GatewayConfig {
                 .route("share_post", r -> r.path("/share/")
                         .and().method("POST")
                         .filters(f -> f.filter(jwtAuthenticationFilter))
-                        .uri("lb://FileSharing"))
+                        .uri("lb://FileManagement"))
 
                 .route("share_delete", r -> r.path("/share/")
                         .and().method("DELETE")
