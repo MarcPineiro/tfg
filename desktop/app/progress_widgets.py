@@ -49,7 +49,8 @@ class CustomProgressItem(QWidget):
         self.label.setStyleSheet("color: gray;")
 
         self.folderButton = QPushButton()
-        self.folderButton.setIcon(QIcon("icons/folder.png"))
+        current_directory = os.path.dirname(os.path.realpath(__file__))
+        self.folderButton.setIcon(QIcon(os.path.join(current_directory, "icons/folder.png")))
         self.folderButton.setToolTip("Open containing folder")
         self.folderButton.clicked.connect(self.openFolder)
         self.folderButton.setFixedSize(30, 30)

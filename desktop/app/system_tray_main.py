@@ -45,10 +45,10 @@ class SystemTrayMain(QMainWindow):
         self.setupUi()
         self.setupSystemTray()
 
-        self.syncThread = SyncThread(
-            self.config, self.dbPath, self.fileSyncManager,
-            self.updateInitialSyncProgress
-        )
+        #self.syncThread = SyncThread(
+        #    self.config, self.dbPath, self.fileSyncManager,
+        #    self.updateInitialSyncProgress
+        #)
 
         if DatabaseOperations.getAutoSyncSetting(self.dbPath):
             self.startSync()
@@ -100,7 +100,7 @@ class SystemTrayMain(QMainWindow):
         self.show()
 
     def startSync(self):
-        self.syncThread.start()
+        #self.syncThread.start()
         logging.info("Synchronization started.")
 
     def updateInitialSyncProgress(self, item, progress):
@@ -156,7 +156,8 @@ class SystemTrayMain(QMainWindow):
         syncControlLayout.addWidget(self.syncButton)
 
         self.restartIcon = QPushButton()
-        self.restartIcon.setIcon(QIcon("icons/restart.png"))
+        current_directory = os.path.dirname(os.path.realpath(__file__))
+        self.restartIcon.setIcon(QIcon(os.path.join(current_directory, "icons/restart.png")))
         self.restartIcon.setToolTip("Initial Sync Progress")
         self.restartIcon.setVisible(False)
         syncControlLayout.addWidget(self.restartIcon)
@@ -164,17 +165,20 @@ class SystemTrayMain(QMainWindow):
         layout.addLayout(syncControlLayout)
 
         self.folderButton = QPushButton()
-        self.folderButton.setIcon(QIcon("icons/folder.png"))
+        current_directory = os.path.dirname(os.path.realpath(__file__))
+        self.folderButton.setIcon(QIcon(os.path.join(current_directory, "icons/folder.png")))
         self.folderButton.clicked.connect(self.openFolder)
         layout.addWidget(self.folderButton)
 
         self.webButton = QPushButton()
-        self.webButton.setIcon(QIcon("icons/web.png"))
+        current_directory = os.path.dirname(os.path.realpath(__file__))
+        self.webButton.setIcon(QIcon(os.path.join(current_directory, "icons/web.png")))
         self.webButton.clicked.connect(self.openWeb)
         layout.addWidget(self.webButton)
 
         self.settingsButton = QPushButton()
-        self.settingsButton.setIcon(QIcon("icons/settings.png"))
+        current_directory = os.path.dirname(os.path.realpath(__file__))
+        self.settingsButton.setIcon(QIcon(os.path.join(current_directory, "icons/settings.png")))
         self.settingsButton.clicked.connect(self.openSettings)
         layout.addWidget(self.settingsButton)
 
@@ -185,13 +189,18 @@ class SystemTrayMain(QMainWindow):
 
     def setupSystemTray(self):
         self.trayIcon = QSystemTrayIcon(self)
-        self.trayIcon.setIcon(QIcon("icons/tray.png"))
+        current_directory = os.path.dirname(os.path.realpath(__file__))
+        self.trayIcon.setIcon(QIcon(os.path.join(current_directory, "icons/tray.png")))
 
         trayMenu = QMenu()
 
         settingsAction = QAction("Settings", self)
         settingsAction.triggered.connect(self.openSettings)
         trayMenu.addAction(settingsAction)
+
+        openAction = QAction("Open", self)
+        openAction.triggered.connect(self.showMainWindowNextToTrayIcon)
+        trayMenu.addAction(openAction)
 
         #historyAction = QAction("History", self)
         #historyAction.triggered.connect(self.openHistory)
@@ -203,8 +212,9 @@ class SystemTrayMain(QMainWindow):
 
         self.trayIcon.setContextMenu(trayMenu)
         self.trayIcon.show()
+        self.trayIcon.setVisible(True)
 
-        self.trayIcon.activated.connect(self.onTrayIconClicked)
+        #self.trayIcon.activated.connect(self.onTrayIconClicked)
 
     def onTrayIconClicked(self, reason):
         if reason == QSystemTrayIcon.Trigger:
@@ -254,10 +264,11 @@ class SystemTrayMain(QMainWindow):
             logging.info("Sync disabled.")
 
     def updateSyncIcon(self, syncing):
+        current_directory = os.path.dirname(os.path.realpath(__file__))
         if syncing:
-            self.syncButton.setIcon(QIcon("icons/sync_on.png"))
+            self.syncButton.setIcon(QIcon(os.path.join(current_directory, "icons/sync_on.png")))
         else:
-            self.syncButton.setIcon(QIcon("icons/sync_off.png"))
+            self.syncButton.setIcon(QIcon(os.path.join(current_directory, "icons/sync_off.png")))
 
     def openFolder(self):
         folderPath = self.config['watched_folder']
