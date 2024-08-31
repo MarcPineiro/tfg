@@ -20,4 +20,6 @@ public interface FileRepository extends JpaRepository<FileEntity, UUID> {
     Optional<FileEntity> findByElementIdAndDeleted(ElementEntity elementEntity, boolean deleted);
 
     List<FileEntity> findByParentAndName(FolderEntity parent, String name);
+
+    void deleteByUserId(UUID userId);
 }

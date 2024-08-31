@@ -88,4 +88,8 @@ public class UserService {
     public UserEntity getUserName(UUID id) {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found"));
     }
+
+    public void deleteByUserId(UUID userId) {
+        userRepository.deleteById(userId);
+    }
 }

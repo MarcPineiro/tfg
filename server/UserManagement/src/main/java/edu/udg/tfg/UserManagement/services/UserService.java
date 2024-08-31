@@ -2,6 +2,8 @@ package edu.udg.tfg.UserManagement.services;
 
 import edu.udg.tfg.UserManagement.controllers.requests.UserRequest;
 import edu.udg.tfg.UserManagement.entities.UserInfo;
+import edu.udg.tfg.UserManagement.queue.Receiver;
+import edu.udg.tfg.UserManagement.queue.Sender;
 import edu.udg.tfg.UserManagement.repositories.UserRepository;
 import jakarta.ws.rs.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ import java.util.UUID;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private Sender sender;
 
     public List<UserInfo> getAllUsers() {
         return userRepository.findAll();
@@ -38,6 +43,7 @@ public class UserService {
     }
 
     public void deleteUser(UUID id) {
+        sender.deleteUser(id);
         userRepository.deleteById(id);
     }
 }

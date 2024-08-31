@@ -25,4 +25,6 @@ public interface TrashRecordRepository extends JpaRepository<TrashRecord, UUID> 
     void deleteByElementIdAndUserId(UUID fileId, UUID userId);
 
     List<TrashRecord> findByUserIdAndRoot(UUID userId, boolean root);
+
+    void deleteByUserId(UUID userId);
 }

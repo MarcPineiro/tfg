@@ -24,4 +24,10 @@ public class Receiver {
         fileSharingService.delete(UUID.fromString(deleteElement.elementId()), UUID.fromString(deleteElement.userId()));
         sender.confirmDelete(deleteElement);
     }
+
+
+    @RabbitListener(queues = RabbitConfig.DELETE_USER_FS)
+    public void receiveMessage(final UUID userId) {
+        fileSharingService.deleteByUserId(userId);
+    }
 }

@@ -132,9 +132,16 @@ public class FolderService {
     public void moveFile(UUID entityId, UUID folderId) {
         Optional<FolderEntity> file = folderRepository.findByElementId(new ElementEntity(entityId));
         FolderEntity fileEntity = file.orElseThrow(() -> new NotFoundException("Folder not found"));
-        Optional<FolderEntity> folder = folderRepository.findByElementId(new ElementEntity(folderId));
-        fileEntity.setParent(folder.orElseThrow(() -> new NotFoundException("Folder not found")));
+        FolderEntity folder = folderRepository.findByElementId(new ElementEntity(folderId)).orElseThrow(() -> new NotFoundException("Folder not found"));
+        checkNoAncestor(fileEntity, folder);
+        fileEntity.setParent(folder);
         folderRepository.save(fileEntity);
+    }
+
+    private void checkNoAncestor(FolderEntity fileEntity, FolderEntity folder) {
+        if(folder == null) return;
+        if(fileEntity.getId() == folder.getId()) throw new ForbiddenException("The movement is illegal.");
+        checkNoAncestor(fileEntity, folder.getParent());
     }
 
     public List<FileEntity> getFilesByFolder(UUID folderId) {
@@ -182,5 +189,9 @@ public class FolderService {
         FileInfo fileInfo = folderMapper.mapFileInfo(folder);
         fileInfo.setSharedWith(sharedService.getShareds(fileInfo.getId()));
         return fileInfo;
+    }
+
+    public void deleteByUserId(UUID userId) {
+        folderRepository.deleteByUserId(userId);
     }
 }

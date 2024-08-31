@@ -85,7 +85,7 @@ class SystemTrayMain(QMainWindow):
         self.socketClient = None
         self.hide()
 
-        loginDialog = LoginDialog(self.dbPath)
+        loginDialog = LoginDialog(self.dbPath, "./config/config.json")
         if loginDialog.exec_() != QDialog.Accepted:
             sys.exit("User closed the application.")
         self.tokenManager = TokenManager(self.dbPath, loginDialog.username, EncryptionUtility.encryptData(loginDialog.password, EncryptionUtility.loadKey()))
@@ -185,7 +185,7 @@ class SystemTrayMain(QMainWindow):
 
     def setupSystemTray(self):
         self.trayIcon = QSystemTrayIcon(self)
-        self.trayIcon.setIcon(QIcon("icons/sync_on.png"))
+        self.trayIcon.setIcon(QIcon("icons/tray.png"))
 
         trayMenu = QMenu()
 

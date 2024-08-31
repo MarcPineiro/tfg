@@ -1,4 +1,4 @@
-package edu.udg.tfg.FileManagement.feignClients.userManagement;
+package edu.udg.tfg.FileManagement.feignClients.userAuth;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;

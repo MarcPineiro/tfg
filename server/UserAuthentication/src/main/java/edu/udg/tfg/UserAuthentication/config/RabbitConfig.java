@@ -8,6 +8,7 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,6 +18,7 @@ public class RabbitConfig {
 
     public final static String QUEUE_NAME = "spring-boot";
     public final static String HISTORY_QUEUE = "history";
+    public static final String DELETE_USER_UA = "userAuthUserDelete";
 
     @Bean
     Queue queue() {
@@ -33,12 +35,23 @@ public class RabbitConfig {
         return BindingBuilder.bind(queue).to(exchange).with(QUEUE_NAME);
     }
 
+
+    @Bean
+    Queue queueDeleteUser() {
+        return new Queue(DELETE_USER_UA, false);
+    }
+
+    @Bean
+    Binding bindingDeleteUser(@Qualifier("queueDeleteUser") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(DELETE_USER_UA);
+    }
+
     @Bean
     SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
                                              MessageListenerAdapter listenerAdapter) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(QUEUE_NAME);
+        container.setQueueNames(QUEUE_NAME, DELETE_USER_UA);
         container.setMessageListener(listenerAdapter);
         return container;
     }

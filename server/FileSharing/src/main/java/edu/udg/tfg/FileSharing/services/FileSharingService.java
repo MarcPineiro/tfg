@@ -72,4 +72,8 @@ public class FileSharingService {
     public List<SharedAccess> getSharedUsers(UUID elementId) {
         return sharedAccessRepository.findByElementId(elementId);
     }
+
+    public void deleteByUserId(UUID userId) {
+        sharedAccessRepository.deleteByUserId(userId);
+    }
 }

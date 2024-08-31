@@ -30,4 +30,11 @@ public class Receiver {
             commandService.handleDesktopAppCommand(UUID.fromString(command.userId()), commandMapper.map(command));
         }
     }
+
+
+
+    @RabbitListener(queues = RabbitConfig.DELETE_USER_SS)
+    public void receiveMessage(final UUID userId) {
+        commandService.deleteByUserId(userId);
+    }
 }

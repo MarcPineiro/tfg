@@ -72,4 +72,8 @@ public class TrashService {
     public void remove(UUID userId, UUID elementId) {
         trashRecordRepository.deleteByElementIdAndUserId(userId, elementId);
     }
+
+    public void deleteByUserId(UUID userId) {
+        trashRecordRepository.deleteByUserId(userId);
+    }
 }

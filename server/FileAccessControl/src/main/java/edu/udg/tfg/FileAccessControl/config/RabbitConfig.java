@@ -19,6 +19,7 @@ public class RabbitConfig {
     public static final String DELETE_ACCESS_QUEUE = "deleteAccessQueue";
     public final static String CONFIRM_DELETE = "confirmDelteTrash";
     public final static String HISTORY_QUEUE = "history";
+    public static final String DELETE_USER_FA = "fileAccessUserDelete";
 
     @Bean
     public Queue addAccessQueue() {
@@ -27,6 +28,11 @@ public class RabbitConfig {
 
     @Bean
     public Queue deleteAccessQueue() {
+        return new Queue(DELETE_ACCESS_QUEUE, false);
+    }
+
+    @Bean
+    public Queue deleteUser() {
         return new Queue(DELETE_ACCESS_QUEUE, false);
     }
 
@@ -46,11 +52,16 @@ public class RabbitConfig {
     }
 
     @Bean
+    public Binding bindingDeleteUserQueue(@Qualifier("deleteUser") Queue deleteUser, TopicExchange exchange) {
+        return BindingBuilder.bind(deleteUser).to(exchange).with(DELETE_USER_FA);
+    }
+
+    @Bean
     SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
                                              MessageListenerAdapter listenerAdapter) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(DELETE_ACCESS_QUEUE, ADD_ACCESS_QUEUE);
+        container.setQueueNames(DELETE_ACCESS_QUEUE, ADD_ACCESS_QUEUE, DELETE_USER_FA);
         container.setMessageListener(listenerAdapter);
         return container;
     }

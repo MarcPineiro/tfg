@@ -96,4 +96,8 @@ public class CommandService {
     public void removeCommand(UUID userId, UUID commandId) {
         commandRepository.deleteById(commandId);
     }
+
+    public void deleteByUserId(UUID userId) {
+        commandRepository.deleteByUserId(userId);
+    }
 }

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import edu.udg.tfg.Trash.config.RabbitConfig;
 
+import java.util.UUID;
+
 @Component
 public class Receiver {
 
@@ -19,4 +21,10 @@ public class Receiver {
         trashService.confirm(deleteElemtnConfirm.elementId(), deleteElemtnConfirm.userId(), deleteElemtnConfirm.service());
     }
 
+
+
+    @RabbitListener(queues = RabbitConfig.DELETE_USER_TR)
+    public void receiveMessage(final UUID userId) {
+        trashService.deleteByUserId(userId);
+    }
 }

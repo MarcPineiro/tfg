@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 
@@ -22,6 +23,11 @@ public class Receiver {
     @RabbitListener(queues = RabbitConfig.DELETE_ACCESS_QUEUE)
     public void receiveMessage(final DeleteAccess deleteAccess) {
         fileAccessService.deleteFileAccess(deleteAccess.elementId(), deleteAccess.userId());
+    }
+
+    @RabbitListener(queues = RabbitConfig.DELETE_USER_FA)
+    public void receiveMessage(final UUID userId) {
+        fileAccessService.deleteByUserId(userId);
     }
 
     @RabbitListener(queues = RabbitConfig.ADD_ACCESS_QUEUE)

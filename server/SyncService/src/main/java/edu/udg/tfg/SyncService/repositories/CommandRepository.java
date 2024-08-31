@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface CommandRepository extends JpaRepository<CommandEntity, UUID> {
     List<CommandEntity> findByUserId(UUID userId);
     void deleteByElementIdAndUserId(UUID elementId, UUID userId);
+
+    void deleteByUserId(UUID userId);
 }

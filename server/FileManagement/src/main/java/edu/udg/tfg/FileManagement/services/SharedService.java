@@ -14,7 +14,7 @@ import edu.udg.tfg.FileManagement.feignClients.fileShare.FileShareClient;
 import edu.udg.tfg.FileManagement.feignClients.fileShare.FilesSharedResponse;
 import edu.udg.tfg.FileManagement.feignClients.fileShare.SharedRequest;
 import edu.udg.tfg.FileManagement.feignClients.fileShare.UsersSharedResponse;
-import edu.udg.tfg.FileManagement.feignClients.userManagement.UserAuthenticationClient;
+import edu.udg.tfg.FileManagement.feignClients.userAuth.UserAuthenticationClient;
 import edu.udg.tfg.FileManagement.queue.Sender;
 import edu.udg.tfg.FileManagement.repositories.FileRepository;
 import edu.udg.tfg.FileManagement.repositories.FolderRepository;

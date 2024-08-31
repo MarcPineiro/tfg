@@ -17,6 +17,12 @@ public class RabbitConfig {
 
     public final static String QUEUE_NAME = "userManagement";
     public final static String HISTORY_QUEUE = "history";
+    public static final String DELETE_USER_FM = "fileManagerUserDelete";
+    public static final String DELETE_USER_FA = "fileAccessUserDelete";
+    public static final String DELETE_USER_FS = "fileSharingUserDelete";
+    public static final String DELETE_USER_SS = "syncUserDelete";
+    public static final String DELETE_USER_TR = "trashUserDelete";
+    public static final String DELETE_USER_UA = "userAuthUserDelete";
 
     @Bean
     Queue queue() {

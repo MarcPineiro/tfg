@@ -24,4 +24,6 @@ public interface FolderRepository extends JpaRepository<FolderEntity, UUID> {
     Optional<FolderEntity> findByUserIdAndDeletedAndParentIsNull(UUID userId, boolean deleted);
 
     Optional<FolderEntity> findByElementIdAndDeleted(ElementEntity elementEntity, boolean deleted);
+
+    void deleteByUserId(UUID userId);
 }

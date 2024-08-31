@@ -18,4 +18,6 @@ public interface AccessRuleRepository extends JpaRepository<AccessRule, UUID> {
     Optional<AccessRule> findByElementIdAndUserId(UUID fileId, UUID userId);
 
     void deleteByElementIdAndUserId(UUID fileId, UUID userId);
+
+    void deleteByUserId(UUID userId);
 }

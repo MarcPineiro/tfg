@@ -115,4 +115,8 @@ public class FileService {
         fileInfo.setSharedWith(sharedService.getShareds(fileInfo.getId()));
         return fileInfo;
     }
+
+    public void deleteByUserId(UUID userId) {
+        fileRepository.deleteByUserId(userId);
+    }
 }

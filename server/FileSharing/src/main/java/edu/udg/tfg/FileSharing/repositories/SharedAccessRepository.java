@@ -17,4 +17,6 @@ public interface SharedAccessRepository extends JpaRepository<SharedAccess, UUID
     Optional<SharedAccess> findByElementIdAndUserId(UUID folderId, UUID userId);
 
     List<SharedAccess> findByElementId(UUID elementId);
+
+    void deleteByUserId(UUID userId);
 }

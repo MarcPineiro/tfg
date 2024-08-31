@@ -49,7 +49,7 @@ public class FolderEntity {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL) // Cascade deletion to files
     private List<FileEntity> files;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     private ElementEntity elementId;
 
     public Boolean getShared() {

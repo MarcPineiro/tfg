@@ -41,5 +41,7 @@ public class FileAccessService {
         return accessRule.map(rule -> rule.getAccessType().ordinal()).orElseGet(() -> 0);
     }
 
-    // Other methods for folder access, etc.
+    public void deleteByUserId(UUID userId) {
+        accessRuleRepository.deleteByUserId(userId);
+    }
 }

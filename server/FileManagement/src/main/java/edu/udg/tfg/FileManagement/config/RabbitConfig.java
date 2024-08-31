@@ -8,6 +8,7 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,11 +22,7 @@ public class RabbitConfig {
     public final static String CONFIRM_DELETE = "confirmDelteTrash";
     public final static String TRASH_QUEUE_NAME = "trash";
     public final static String HISTORY_QUEUE = "history";
-
-    @Bean
-    Queue queue() {
-        return new Queue(DELETE_ELEMENT, false);
-    }
+    public static final String DELETE_USER_FM = "fileManagerUserDelete";
 
     @Bean
     TopicExchange exchange() {
@@ -33,8 +30,24 @@ public class RabbitConfig {
     }
 
     @Bean
+    Queue queue() {
+        return new Queue(DELETE_ELEMENT, false);
+    }
+
+    @Bean
     Binding binding(Queue queue, TopicExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(DELETE_ELEMENT);
+    }
+
+
+    @Bean
+    Queue queueDeleteUser() {
+        return new Queue(DELETE_USER_FM, false);
+    }
+
+    @Bean
+    Binding bindingDeleteUser(@Qualifier("queueDeleteUser") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(DELETE_USER_FM);
     }
 
     @Bean
@@ -42,7 +55,7 @@ public class RabbitConfig {
                                              MessageListenerAdapter listenerAdapter) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(DELETE_ELEMENT);
+        container.setQueueNames(DELETE_ELEMENT, DELETE_USER_FM);
         container.setMessageListener(listenerAdapter);
         return container;
     }

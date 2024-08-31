@@ -35,7 +35,7 @@ public class FileEntity {
     @ManyToOne
     private FolderEntity parent;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     private ElementEntity elementId;
 
     public FileEntity() {

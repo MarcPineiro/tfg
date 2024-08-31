@@ -10,7 +10,7 @@ import edu.udg.tfg.FileManagement.entities.mappers.FolderMapper;
 import edu.udg.tfg.FileManagement.feignClients.trash.TrashRequest;
 import edu.udg.tfg.FileManagement.feignClients.trash.TrashResponse;
 import edu.udg.tfg.FileManagement.feignClients.trash.TrashClient;
-import edu.udg.tfg.FileManagement.feignClients.userManagement.UserAuthenticationClient;
+import edu.udg.tfg.FileManagement.feignClients.userAuth.UserAuthenticationClient;
 import edu.udg.tfg.FileManagement.queue.Sender;
 import edu.udg.tfg.FileManagement.repositories.FileRepository;
 import edu.udg.tfg.FileManagement.repositories.FolderRepository;
