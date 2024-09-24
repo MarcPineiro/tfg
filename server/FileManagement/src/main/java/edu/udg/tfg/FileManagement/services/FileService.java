@@ -47,6 +47,9 @@ public class FileService {
     @Autowired
     private SharedService sharedService;
 
+    @Autowired
+    private CommandService commandService;
+
     public FileEntity createFile(String name, String contentType, Long size, UUID folderId, UUID userId) {
         FolderEntity folder = folderRepository.findByElementId(new ElementEntity(folderId)).orElseThrow(() -> new NotFoundException("Folder not found"));
         FileEntity file = new FileEntity();
@@ -82,18 +85,23 @@ public class FileService {
         fileRepository.delete(file);
     }
 
-    public void setDeleteFile(UUID fileId) {
+    public void setDeleteFile(UUID fileId, String client, UUID userId) {
         FileEntity file = fileRepository.findByElementId(new ElementEntity(fileId)).orElseThrow(() -> new NotFoundException("File not found"));
         file.setDeleted(true);
         fileRepository.save(file);
+        commandService.sendDelete(fileId, client, userId.toString(), new Date(), file.getParent());
     }
 
-    public void moveFile(UUID fileId, UUID folderId) {
+    public void moveFile(UUID fileId, UUID folderId, String client, UUID userId) {
         Optional<FileEntity> file = fileRepository.findByElementId(new ElementEntity(fileId));
         FileEntity fileEntity = file.orElseThrow(() -> new NotFoundException("File not found"));
         Optional<FolderEntity> folder = folderRepository.findByElementId(new ElementEntity(folderId));
+        FolderEntity prevParent = fileEntity.getParent();
         fileEntity.setParent(folder.orElseThrow(() -> new NotFoundException("File not found")));
+        fileEntity.setLastModification(new Date());
         fileRepository.save(fileEntity);
+        commandService.sendDelete(fileId, client, userId.toString(), fileEntity.getLastModification(), prevParent);
+        commandService.sendDownload(fileId, client, userId.toString(), fileEntity.getLastModification(), folder.get());
     }
 
     public FileEntity getFile(UUID fileId) {
@@ -104,10 +112,11 @@ public class FileService {
         return fileRepository.findByElementIdAndDeleted(new ElementEntity(elementId), deleted).orElseThrow(() -> new NotFoundException("File not found"));
     }
 
-    public void restore(UUID elementId) {
+    public void restore(UUID elementId, String client, UUID userId) {
         FileEntity file = fileRepository.findByElementId(new ElementEntity(elementId)).orElseThrow(() -> new NotFoundException("Folder not found"));
         file.setDeleted(false);
         fileRepository.save(file);
+        commandService.sendDownload(elementId, client, userId.toString(), new Date(), file.getParent());
     }
 
     public FileInfo buildFileInfo(FileEntity file) {

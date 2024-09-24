@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -58,6 +59,8 @@ public class FolderService {
 
     @Autowired
     private SharedService sharedService;
+    @Autowired
+    private CommandService commandService;
 
     public FolderEntity createFolder(String name, FolderEntity parent, UUID userId) {
         FolderEntity folderEntity = new FolderEntity();
@@ -66,7 +69,7 @@ public class FolderService {
         ElementEntity id = new ElementEntity();
         id.setFolder(true);
         id = elementRepository.save(id);
-        folderEntity.setElementId(id.getId());
+        folderEntity.setElementId(id);
         FolderEntity folder = folderRepository.save(folderEntity);
         fileAccessService.addFileAccess(folder.getElementId(), userId, AccessType.ADMIN);
         return folder;
@@ -79,11 +82,12 @@ public class FolderService {
         else return name + "(" + folders.size() + ")";
     }
 
-    public void updateFolderMetadata(UUID folderId, String name) {
+    public FolderEntity updateFolderMetadata(UUID folderId, String name) {
         FolderEntity folder = folderRepository.findByElementId(new ElementEntity(folderId))
                 .orElseThrow(() -> new NotFoundException("Folder not found"));
         folder.setName(name);
-        folderRepository.save(folder);
+        folder.setLastModification(new Date());
+        return folderRepository.save(folder);
     }
 
     public Resource downloadFolder(UUID folderId) {
@@ -111,10 +115,11 @@ public class FolderService {
     }
 
     @Transactional
-    public void setRemoveFolder(UUID folderId) {
+    public void setRemoveFolder(UUID folderId, String client, UUID userId) {
         FolderEntity folder = folderRepository.findByElementId(new ElementEntity(folderId))
                 .orElseThrow(() -> new NotFoundException("Folder not found"));
         setRemoveFolderRecursively(folder);
+        commandService.sendDelete(folderId, client, userId.toString(), new Date(), folder.getParent());
     }
 
     private void setRemoveFolderRecursively(FolderEntity folder) {
@@ -129,13 +134,17 @@ public class FolderService {
         folderRepository.save(folder);
     }
 
-    public void moveFile(UUID entityId, UUID folderId) {
+    public void moveFile(UUID entityId, UUID folderId, String client, UUID userId) {
         Optional<FolderEntity> file = folderRepository.findByElementId(new ElementEntity(entityId));
         FolderEntity fileEntity = file.orElseThrow(() -> new NotFoundException("Folder not found"));
         FolderEntity folder = folderRepository.findByElementId(new ElementEntity(folderId)).orElseThrow(() -> new NotFoundException("Folder not found"));
         checkNoAncestor(fileEntity, folder);
+        FolderEntity previousParent = folder.getParent();
         fileEntity.setParent(folder);
-        folderRepository.save(fileEntity);
+        fileEntity.setLastModification(new Date());
+        fileEntity = folderRepository.save(fileEntity);
+        commandService.sendDelete(entityId, client, userId.toString(), fileEntity.getLastModification(), previousParent);
+        commandService.sendDownload(entityId, client, userId.toString(), fileEntity.getLastModification(), folder);
     }
 
     private void checkNoAncestor(FolderEntity fileEntity, FolderEntity folder) {
@@ -172,10 +181,11 @@ public class FolderService {
         return folderStructure;
     }
 
-    public void restore(UUID elementId) {
+    public void restore(UUID elementId, String client, UUID userId) {
         FolderEntity folder = folderRepository.findByElementId(new ElementEntity(elementId)).orElseThrow(() -> new NotFoundException("Folder not found"));
         folder.setDeleted(false);
         folderRepository.save(folder);
+        commandService.sendDownload(elementId, client, userId.toString(), new Date(), folder.getParent());
     }
 
     public void createRootFolder(UUID userId) {

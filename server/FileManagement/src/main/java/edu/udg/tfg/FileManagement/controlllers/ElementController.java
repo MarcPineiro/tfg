@@ -1,5 +1,6 @@
 package edu.udg.tfg.FileManagement.controlllers;
 
+import com.netflix.discovery.converters.Auto;
 import edu.udg.tfg.FileManagement.controlllers.requests.CreateFileRequest;
 import edu.udg.tfg.FileManagement.controlllers.requests.UpdateFileRequest;
 import edu.udg.tfg.FileManagement.controlllers.responses.FileInfo;
@@ -43,6 +44,8 @@ public class ElementController {
     private FolderMapper folderMapper;
     @Autowired
     private FileMapper fileMapper;
+    @Autowired
+    private CommandService commandService;
 
     @GetMapping("/root")
     public ResponseEntity<?> getRootFolder(@RequestHeader("X-User-Id") UUID userId) {
@@ -137,41 +140,43 @@ public class ElementController {
     }
 
     @PutMapping("/{elementId}")
-    public ResponseEntity<?> updateElement(@RequestHeader("X-User-Id") UUID userId, @RequestBody UpdateFileRequest request, @PathVariable UUID elementId) {
+    public ResponseEntity<?> updateElement(@RequestHeader("X-User-Id") UUID userId, @RequestHeader("X-Client-Type") String client, @RequestBody UpdateFileRequest request, @PathVariable UUID elementId) {
         boolean isFolder = elementService.isFolder(elementId);
         fileAccessService.checkAccessElement(userId, elementId, isFolder, AccessType.WRITE);
         if (isFolder) {
-            folderService.updateFolderMetadata(elementId, request.getName());
+            FolderEntity folder = folderService.updateFolderMetadata(elementId, request.getName());
+            commandService.sendUpdate(elementId, client, userId.toString(), folder.getLastModification(), folder.getParent());
         } else {
-            fileService.updateFile(elementId, request.getName());
+            FileEntity file = fileService.updateFile(elementId, request.getName());
+            commandService.sendUpdate(elementId, client, userId.toString(), file.getLastModification(), file.getParent());
         }
         return ResponseEntity.accepted().build();
     }
 
     @PutMapping("/{elementId}/move/{folderId}")
-    public ResponseEntity<?> moveFolder(@RequestHeader("X-User-Id") UUID userId, @PathVariable UUID elementId, @PathVariable UUID folderId) {
+    public ResponseEntity<?> moveFolder(@RequestHeader("X-User-Id") UUID userId, @RequestHeader("X-Client-Type") String client, @PathVariable UUID elementId, @PathVariable UUID folderId) {
         boolean isFolder = elementService.isFolder(elementId);
         fileAccessService.checkAccessElement(userId, elementId, isFolder, AccessType.WRITE);
         fileAccessService.checkAccessElement(userId, folderId, true, AccessType.WRITE);
 
         if (isFolder) {
-            folderService.moveFile(elementId, folderId);
+            folderService.moveFile(elementId, folderId, client, userId);
         } else {
-            fileService.moveFile(elementId, folderId);
+            fileService.moveFile(elementId, folderId, client, userId);
         }
 
         return ResponseEntity.accepted().build();
     }
 
     @DeleteMapping("/{elementId}")
-    public ResponseEntity<?> deleteElemnt(@RequestHeader("X-User-Id") UUID userId, @PathVariable UUID elementId) {
+    public ResponseEntity<?> deleteElemnt(@RequestHeader("X-User-Id") UUID userId, @RequestHeader("X-Client-Type") String client, @PathVariable UUID elementId) {
         boolean isFolder = elementService.isFolder(elementId);
         fileAccessService.checkAccessElement(userId, elementId, isFolder, AccessType.WRITE);
 
         if (isFolder) {
-            folderService.setRemoveFolder(elementId);
+            folderService.setRemoveFolder(elementId, client, userId);
         } else {
-            fileService.setDeleteFile(elementId);
+            fileService.setDeleteFile(elementId, client, userId);
         }
 
         return ResponseEntity.ok().build();

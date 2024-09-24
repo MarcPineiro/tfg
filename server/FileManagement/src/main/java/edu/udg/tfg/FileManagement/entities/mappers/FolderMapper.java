@@ -15,13 +15,11 @@ public interface FolderMapper {
     @Mapping(source = "elementId", target = "id")
     FolderInfo map(FolderEntity source);
 
-    @Mapping(source = "id", target = "elementId")
     FolderEntity map(FolderInfo source);
 
     @Mapping(source = "elementId", target = "id")
     FileInfo mapFileInfo(FolderEntity source);
 
-    @Mapping(source = "id", target = "elementId")
     FolderEntity mapFileInfo(FolderInfo source);
 
     List<FolderInfo> mapFileInfo(List<FolderEntity> destination);

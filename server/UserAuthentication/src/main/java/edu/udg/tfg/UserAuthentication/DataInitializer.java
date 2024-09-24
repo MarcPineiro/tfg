@@ -5,6 +5,7 @@ import edu.udg.tfg.UserAuthentication.feignClients.fileManagement.FileManagement
 import edu.udg.tfg.UserAuthentication.feignClients.userManagement.UserManagementClient;
 import edu.udg.tfg.UserAuthentication.feignClients.userManagement.UserRequest;
 import edu.udg.tfg.UserAuthentication.repositories.UserRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -20,6 +22,8 @@ public class DataInitializer {
     @Bean
     public ApplicationRunner initializer(UserRepository repository, PasswordEncoder passwordEncoder, FileManagementClient fileManagementClient, UserManagementClient userManagementClient) {
         return args -> {
+            Optional<UserEntity> user = repository.findByUsername("test");
+            if(user.isPresent()) return;
             UserEntity userEntity = new UserEntity();
             userEntity.setUsername("test");
             userEntity.setPassword(passwordEncoder.encode("test"));

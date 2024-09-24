@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-08-30T23:39:44+0200",
+    date = "2024-08-31T12:49:07+0200",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 18.0.2 (Amazon.com Inc.)"
 )
 @Component
@@ -45,7 +45,6 @@ public class FolderMapperImpl implements FolderMapper {
 
         FolderEntity folderEntity = new FolderEntity();
 
-        folderEntity.setElementId( source.getId() );
         folderEntity.setId( source.getId() );
         folderEntity.setName( source.getName() );
         folderEntity.setFiles( fileInfoListToFileEntityList( source.getFiles() ) );
@@ -87,7 +86,6 @@ public class FolderMapperImpl implements FolderMapper {
 
         FolderEntity folderEntity = new FolderEntity();
 
-        folderEntity.setElementId( source.getId() );
         folderEntity.setId( source.getId() );
         folderEntity.setName( source.getName() );
         folderEntity.setFiles( fileInfoListToFileEntityList( source.getFiles() ) );

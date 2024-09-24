@@ -11,6 +11,8 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: mydb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   rabbitmq:
     image: rabbitmq:management
@@ -87,7 +89,7 @@ services:
   #     - spring-net
 
 volumes:
-  artemis-data:
+  postgres_data:
 
 networks:
   spring-net:

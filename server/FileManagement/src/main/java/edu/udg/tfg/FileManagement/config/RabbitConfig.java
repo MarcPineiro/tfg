@@ -23,6 +23,7 @@ public class RabbitConfig {
     public final static String TRASH_QUEUE_NAME = "trash";
     public final static String HISTORY_QUEUE = "history";
     public static final String DELETE_USER_FM = "fileManagerUserDelete";
+    public final static String COMMAND_QUEUE = "commandQueue";
 
     @Bean
     TopicExchange exchange() {
@@ -46,8 +47,8 @@ public class RabbitConfig {
     }
 
     @Bean
-    Binding bindingDeleteUser(@Qualifier("queueDeleteUser") Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(DELETE_USER_FM);
+    Binding bindingDeleteUser(@Qualifier("queueDeleteUser") Queue queueDeleteUser, TopicExchange exchange) {
+        return BindingBuilder.bind(queueDeleteUser).to(exchange).with(DELETE_USER_FM);
     }
 
     @Bean

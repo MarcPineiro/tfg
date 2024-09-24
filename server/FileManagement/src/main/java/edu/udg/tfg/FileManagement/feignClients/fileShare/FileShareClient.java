@@ -22,5 +22,5 @@ public interface FileShareClient {
     void revokeSharedFile(@PathVariable("fileId") String fileId, @PathVariable("userId") String userId);
 
     @GetMapping("/user/{elementId}")
-    UsersSharedResponse getUsersShared(@PathVariable UUID elementId);
+    UsersSharedResponse getUsersShared(@PathVariable("elementId") UUID elementId);
 }

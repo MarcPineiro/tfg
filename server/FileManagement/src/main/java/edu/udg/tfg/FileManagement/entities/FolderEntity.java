@@ -72,8 +72,8 @@ public class FolderEntity {
         return elementId.getId();
     }
 
-    public void setElementId(UUID elementId) {
-        this.elementId = new ElementEntity(elementId);
+    public void setElementId(ElementEntity elementId) {
+        this.elementId = elementId;
     }
 
     public UUID getId() {

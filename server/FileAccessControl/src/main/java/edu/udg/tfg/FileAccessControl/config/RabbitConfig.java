@@ -33,7 +33,7 @@ public class RabbitConfig {
 
     @Bean
     public Queue deleteUser() {
-        return new Queue(DELETE_ACCESS_QUEUE, false);
+        return new Queue(DELETE_USER_FA, false);
     }
 
     @Bean

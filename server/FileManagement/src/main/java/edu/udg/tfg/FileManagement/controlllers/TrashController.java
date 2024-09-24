@@ -70,14 +70,14 @@ public class TrashController {
     }
 
     @PutMapping("/{elementId}/restore")
-    public ResponseEntity<?> restore(@RequestHeader("X-User-Id") UUID userId, @PathVariable UUID elementId) {
+    public ResponseEntity<?> restore(@RequestHeader("X-User-Id") UUID userId, @RequestHeader("X-Client-Type") String client, @PathVariable UUID elementId) {
         boolean isFolder = elementService.isFolder(elementId);
         fileAccessService.checkAccessElement(userId, elementId, isFolder, AccessType.ADMIN);
         trashService.restore(elementId, userId);
         if(isFolder) {
-            folderService.restore(elementId);
+            folderService.restore(elementId, client, userId);
         } else {
-            fileService.restore(elementId);
+            fileService.restore(elementId, client, userId);
         }
         return ResponseEntity.ok().build();
     }

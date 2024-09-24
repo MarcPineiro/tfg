@@ -21,6 +21,7 @@ public class UserController {
     @PostMapping("")
     public ResponseEntity<?> registerUser(@RequestHeader("X-User-Id") UUID userId, @RequestBody UserRequest userRequest) {
         UserInfo userInfo = createUser(userRequest);
+        userInfo.setId(userId);
 
         UserInfo newUserInfo = userService.createUser(userInfo);
         return ResponseEntity.ok(newUserInfo);

@@ -2,10 +2,7 @@ package edu.udg.tfg.FileManagement.queue;
 
 import edu.udg.tfg.FileManagement.config.RabbitConfig;
 import edu.udg.tfg.FileManagement.feignClients.fileAccess.AccessType;
-import edu.udg.tfg.FileManagement.queue.messages.AddAccess;
-import edu.udg.tfg.FileManagement.queue.messages.DeleteAccess;
-import edu.udg.tfg.FileManagement.queue.messages.DeleteElemtn;
-import edu.udg.tfg.FileManagement.queue.messages.DeleteElemtnConfirm;
+import edu.udg.tfg.FileManagement.queue.messages.*;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,5 +33,9 @@ public class Sender {
     public void confirmDelete(DeleteElemtn deleteElemtn) {
         DeleteElemtnConfirm deleteElemtnConfirm = new DeleteElemtnConfirm(deleteElemtn.userId(), deleteElemtn.elementId(), serviceName);
         rabbitTemplate.convertAndSend(RabbitConfig.CONFIRM_DELETE, deleteElemtnConfirm);
+    }
+
+    public void sendCommand(CommandRabbit commandRabbit) {
+        rabbitTemplate.convertAndSend(RabbitConfig.COMMAND_QUEUE, commandRabbit);
     }
 }
